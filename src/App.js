@@ -13,36 +13,34 @@ let fakeServerData = {
       {
         name: 'My favorites',
         songs: [
-        {name:'Adio amore', duration:'4234'},
-        {name:'Jos volim te', duration:'2344'},
-        {name:'Jako IAKO', duration:'5652'},
-        ],
+        {name:'Adio amore', duration:4234},
+        {name:'Jos volim te', duration:2344},
+        {name:'Jako IAKO', duration:7652}
+        ]
 
       },
       { name: 'Discover Weekly',
         songs: [
-          {name:'SI davno', duration:'1231'},
-          {name:'Izgubila sjaj', duration:'4312'},
-          {name:'Gledam te', duration:'2342'}
-        ],
+          {name:'SI davno', duration:1231},
+          {name:'Izgubila sjaj', duration:4312},
+          {name:'Gledam te', duration:2342}
+        ]
       },
-      {
-        name: 'Da nije kurcina?',
-        songs: [
-          {name:'Kako se', duration:'1232'},
-          {name:'Rusis polako', duration:'1252'},
-          {name:'A kada to vidim', duration:'1332'}
-        ],
+      {name: 'Da nije kurcina?',
+       songs: [
+          {name:'Kako se', duration:1236},
+          {name:'Rusis polako', duration:1252},
+          {name:'A kada to vidim', duration:7332}
+        ]
       },
-      {
-        name: 'REPCUGA',
-        songs: [
-          {name:'Tad rusim', duration:'2312'},
-          {name:'Se ja', duration:'1312'},
-          {name:'OKRENI', duration:'3312'}
-        ],
+      {name: 'REPCUGA',
+       songs: [
+          {name:'Tad rusim', duration:2312},
+          {name:'Se ja', duration:5312},
+          {name:'OKRENI', duration:7312}
+        ]
       },
-    ],
+    ]
   }
 }
 
@@ -50,7 +48,7 @@ class PlaylistCounter extends Component{
   render(){
     return(
       <div style={{...defaultStyle, width:'40%', display:'inline-block'}}>
-        <h2 >{this.props.playlists && this.props.playlists.length} playlists</h2>
+        <h2 >{this.props.playlists.length} playlists</h2>
       </div>
     );
   }
@@ -61,7 +59,7 @@ class HoursCounter extends Component{
     let allSongs = this.props.playlists.reduce((songs, eachPlaylist) => {
       return songs.concat(eachPlaylist.songs)
     } , [])
-    let totalDuration = allSongs.reduce((sum, eachSong) => {
+    let totalDuration = allSongs.reduce((sum, eachSong ) => {
       return sum + eachSong.duration
     }, 0)
     return(
@@ -86,11 +84,16 @@ class Filter extends Component{
 
 class Playlist extends Component{
   render(){
+    let playlist = this.props.playlist
     return(
       <div style={{...defaultStyle, display: 'inline-block', width:'25%'}}>
         <img/>
-        <h3>Playlist Name</h3>
-        <ul><li>Song 1</li><li>Song 2</li><li>Song 3</li></ul>
+        <h3>{playlist.name}</h3>
+        <ul>
+          {playlist.songs.map(song => 
+            <li>{song.name}</li>
+          )}
+          </ul>
       </div>
     );
   }
@@ -119,10 +122,10 @@ class App extends Component {
           <HoursCounter playlists={
             this.state.serverData.user.playlists}/>
           <Filter/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
+          {this.state.serverData.user.playlists.map(playlist => 
+            <Playlist playlist={playlist}/>
+          )}
+          
           </div> : <h1 style={defaultStyle}>Loading...</h1>
         }
       </div>
